@@ -19,8 +19,19 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="addData"
         android:text="Add Contact"
         tools:layout_editor_absoluteX="132dp"
         tools:layout_editor_absoluteY="321dp" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        tools:layout_editor_absoluteX="82dp"
+        tools:layout_editor_absoluteY="60dp" />
 
 </android.support.constraint.ConstraintLayout>
