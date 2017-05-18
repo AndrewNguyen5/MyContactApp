@@ -16,7 +16,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     DataBaseHelper myDb;
-    EditText editName,editAddress,editPhone;
+    EditText editName,editAddress,editPhone, searchFor;
     Button btAddData;
 
     @Override
@@ -29,18 +29,21 @@ public class MainActivity extends AppCompatActivity {
         editName = (EditText) findViewById(R.id.editText_name);
         editAddress = (EditText) findViewById(R.id.editText_address);
         editPhone = (EditText) findViewById(R.id.editText_phonenumber);
+        searchFor =(EditText) findViewById(R.id.editText_search);
 
     }
     public void addData(View v){
-        boolean  isInserted = myDb.insertData(editName.getText().toString());
+        boolean  isInserted = myDb.insertData(editName.getText().toString(),editAddress.getText().toString(),editPhone.getText().toString());
+        Toast toast=null;
 
         if (isInserted==true){
             Log.d("MyContact","Data insertion successful");
-            Toast toast=null;
+
             toast.makeText(this,"Data insertion successful",Toast.LENGTH_LONG).show();
         }
         if(isInserted==false){
             Log.d("MyContact","Data insertion not sucessful");
+            toast.makeText(this,"Data insertion not successful",Toast.LENGTH_LONG).show();
         }
     }
 
@@ -58,11 +61,10 @@ public class MainActivity extends AppCompatActivity {
         //setup loop with Cursor moveToNext method
         //      append each col to buffer
         //      use getString method
-        int loc =0;
-        while(loc!=res.getCount()){
+        while(res.moveToNext()){
             for(int i=0;i<4;i++){
                 if(i==0){
-                    buffer.append("ID: "+loc);
+                    buffer.append("ID: ");
                 }
                 if(i==1){
                     buffer.append("NAME: ");
@@ -71,11 +73,10 @@ public class MainActivity extends AppCompatActivity {
                     buffer.append("ADDRESS: ");
                 }
                 if(i==3){
-                    buffer.append("PHONE NUMBER: ");
+                    buffer.append("PHONENUMBER: ");
                 }
                 buffer.append(res.getString(i));
                 buffer.append("\n");
-                loc++;
             }
 
         }
@@ -89,6 +90,19 @@ public class MainActivity extends AppCompatActivity {
         builder.setTitle(title);
         builder.setMessage(message);
         builder.show();
+    }
+
+    public void searchName(View v){
+        Cursor res=myDb.getAllData();
+        StringBuffer buffer= new StringBuffer();
+        while(res.moveToNext()){
+            for(int i=0;i<4;i++){
+                
+            }
+
+        }
+
+
     }
 
 
