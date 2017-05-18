@@ -2,6 +2,7 @@ package com.example.andrew.mycontactapp;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         myDb=new DataBaseHelper(this);
+
         editName = (EditText) findViewById(R.id.editText_name);
         editAddress = (EditText) findViewById(R.id.editText_address);
         editPhone = (EditText) findViewById(R.id.editText_phonenumber);
@@ -33,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (isInserted==true){
             Log.d("MyContact","Data insertion successful");
+            Toast toast=null;
+            toast.makeText(this,"Data insertion successful",Toast.LENGTH_LONG).show();
         }
         if(isInserted==false){
             Log.d("MyContact","Data insertion not sucessful");
@@ -42,25 +47,48 @@ public class MainActivity extends AppCompatActivity {
     public void viewData(View v) {
         Cursor res= myDb.getAllData();
         if (res.getCount()==0){
+            Log.d("MyContact","No data found in database");
             showMessage("Error", "No data found in database");
             //put a Log.d message and toast
             return;
         }
+        else Log.d("MyContact","No data found in database?????? "+ res.getCount());
 
         StringBuffer buffer= new StringBuffer();
         //setup loop with Cursor moveToNext method
         //      append each col to buffer
         //      use getString method
+        int loc =0;
+        while(loc!=res.getCount()){
+            for(int i=0;i<4;i++){
+                if(i==0){
+                    buffer.append("ID: "+loc);
+                }
+                if(i==1){
+                    buffer.append("NAME: ");
+                }
+                if(i==2){
+                    buffer.append("ADDRESS: ");
+                }
+                if(i==3){
+                    buffer.append("PHONE NUMBER: ");
+                }
+                buffer.append(res.getString(i));
+                buffer.append("\n");
+                loc++;
+            }
 
-        while(res.moveToNext()==true){
-            buffer.append(res.getString(res.getPosition()));
         }
         showMessage("Data", buffer.toString());
 
     }
 
     private void showMessage(String title, String message){
-
+        AlertDialog.Builder builder= new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.show();
     }
 
 
