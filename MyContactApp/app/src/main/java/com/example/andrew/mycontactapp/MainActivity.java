@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -93,17 +94,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void searchName(View v){
+        setContentView(R.layout.search_main);
         Cursor res=myDb.getAllData();
         StringBuffer buffer= new StringBuffer();
         while(res.moveToNext()){
             for(int i=0;i<4;i++){
-                
+                if(res.getString(i).equals(searchFor.getText().toString())&&i==1){
+                    for (int k=0;k<4;k++){
+                        if(k==0) buffer.append("ID: ");
+                        if(k==1) buffer.append("NAME: ");
+                        if(k==2) buffer.append("ADDRESS: ");
+                        if(k==3) buffer.append("PHONENUMBER: ");
+                        buffer.append(res.getString(k));
+                        buffer.append("\n");
+                    }
+
+                }
             }
 
         }
-
-
+        if(buffer.toString().equals("")){
+            buffer.append("Not Found");
+        }
+        //showMessage("Search",buffer.toString());
+        TextView display= (TextView) findViewById(R.id.displayText);
+        display.setText(buffer.toString());
     }
 
+    public void goBack(View v){
+        setContentView(R.layout.activity_main);
+        editName = (EditText) findViewById(R.id.editText_name);
+        editAddress = (EditText) findViewById(R.id.editText_address);
+        editPhone = (EditText) findViewById(R.id.editText_phonenumber);
+        searchFor =(EditText) findViewById(R.id.editText_search);
+    }
 
 }
